@@ -14,5 +14,5 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Page<Patient> findByVaccinated(boolean vaccinated, Pageable pageable);
     @Query("select p from Patient p where p.score > 10 and p.vaccinated = true")
     List<Patient> searchPatients(@Param ("score") int score, @Param ("vaccinated") boolean vaccinated);
-
+    Patient findByFirstName(String firstName);
 }

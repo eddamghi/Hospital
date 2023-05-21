@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="template">
+      layout:decorate="template.html"
+     >
 <head>
     <meta charset="UTF-8">
     <title>Patients</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.2.3/css/bootstrap.min.css">
 </head>
 <body>
 <div layout:fragment="content">
-<div class="container mt-2">
-    <div class="card">
-    <div class="card-header">Patients List</div>
-        <div class="card-body">
-            <form method="get" th:action="@{index}">
-                <label>Key word</label>
-                <label>
-                    <input type="text" name="keyword" th:value="${keyword}">
-                </label>
-                <button type="submit" class="btn btn-primary">Search</button>
-            </form>
+    <div class="p-3">
+        <div class="card">
+            <div class="card-header">Liste des patients</div>
+            <div class="card-body">
+                <form method="get" th:href="@{/patients/index}">
+                    <ul class="nav nav-pills">
+                        <li>
+                            <label class="form-label">Keyword:</label>
+                        </li>
+                        <li>
+                            <input type="text" class="form-control" name="keyword">
+                        </li>
+                        <li style="margin-left: 1rem;">
+                            <button class="btn btn-info">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </form>
         <table class="table">
             <thead>
             <tr>
-                <th>Id</th> <th>Last name</th> <th>First name</th> <th>Date of birth</th> <th>vaccinated</th> <th>score
-            </th>
+                <th>Id</th> <th>Last name</th> <th>First name</th> <th>Date of birth</th> <th>vaccinated</th> <th>score </th>
+                <th>Appointments</th>
             </tr>
             </thead>
             <tbody>
@@ -35,15 +43,33 @@
                 <td th:text="${patient.dateOfBirth}"></td>
                 <td th:text="${patient.vaccinated}"></td>
                 <td th:text="${patient.score}"></td>
-                <td><a onclick="return confirm('Are you sure you want to delete this patient')" class="btn btn-danger" th:href="@{delete(id=${patient.id}, keyword=${keyword}, page=${currentPage})}">Delete</a></td>
+                <td>
+                    <a class="btn btn-info"
+                       th:href="@{appointments(id=${patient.id})}">visit
+                    </a>
+                </td>
+                <td>
+                    <a  class="btn btn-danger"
+                        th:href="@{editPatient(id=${patient.id})}">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                </td>
+                <td>
+
+                    <a onclick="return confirm('Are you sure you want to delete this patient')" class="btn btn-danger"
+                       th:href="@{deletePatient(id=${patient.id}, keyword=${keyword}, page=${currentPage})}">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
             </tr>
         </table>
             <ul class = "nav nav-pills">
                 <li th:each="page, status:${pages}">
                     <a th:class="${status.index == currentPage?'btn btn-primary ms-1':'btn btn-outline-primary ms-1'}"
-                       th:text="${status.index}"
+                       th:text="${status.index+1}"
                        th:href="@{index(page=${status.index},keyword=${keyword})}"></a>
             </ul>
+</div>
 </div>
 </div>
 </div>
